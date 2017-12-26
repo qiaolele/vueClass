@@ -45,7 +45,17 @@
         、、、
 
         - 以数组的形式，数组中的每一项，都相当于变量，变量中存真正的非行间样式；
-        - <div :class='[ bg1,bg2 ]'></div>  bg1����Ҫ���ַ���
+        - <div :class='[ bg1,bg2 ]'></div>  bg1和bg2是样式类名称，都会生效
+
+        style {
+            .bg1{
+                color:"#f00';
+            }
+            .bg2{
+                background:'#ff0";
+            }
+
+        }
         、、、
             data:{
             bg1:"bg1",
@@ -106,7 +116,7 @@
                 return
             },
             set(newValue){
-                //newValue�����µ�total��ֵ
+                //newValue:total变量更新之后的值
 
             }
         }

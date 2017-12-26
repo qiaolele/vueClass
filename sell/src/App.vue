@@ -14,7 +14,7 @@
     </div>
 
     <transition enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-      <router-view></router-view>
+      <router-view :seller="seller"></router-view>
     </transition>
   </div>
 </template>
