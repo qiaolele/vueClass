@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!--components  $emit-->
+    <div id="app">
+        <parent></parent>
+    </div>
+<template id="parent">
+    <div>
+        <h1>我是父组件 {{ name }}</h1>
+        <!--3、自定义的事件被触发后，执行一个父组件的函数getName-->
+        <children @n="getName"></children>
+    </div>
+</template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        components:{
+            parent:{
+                template:"#parent",
+                data:function(){
+                    return {name:'糖宝'}
+                },
+                methods:{
+                    //4、父组件通过getName的参数来接收子组件传过来的数据；
+                    getName:function(data){//父组件中的方法
+                        alert(data)//data就是儿子传过来的数据
+                        this.name = data;
+                    }
+                },
+                components:{
+                    children:{
+                        //1、点击子组件的标签的时候，触发一个函数setName
+                        template:"<h2 @click='setName'>我是子组件</h2>",
+                        methods:{
+                            //2、到setName方法中发射一个数据，对应的自定义事件名叫做“n”；
+                            setName:function(){
+                                //子组件向外发射数据
+                                this.$emit('n','vivian');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

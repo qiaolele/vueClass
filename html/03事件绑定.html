@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+    <p>{{msg}}</p>
+    <button @click="reverseMessage">点击按钮 翻转文字</button>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{//所有的数据都放在data里面
+            msg:'hello vue!'
+        },
+        methods:{//所有的函数都放在methods里面
+            reverseMessage:function(){
+//                先把字符串用split转成数组，只有数组才有reverse方法，之后再将数组用join拼接成字符串
+                this.msg = this.msg.split("").reverse().join("");
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>兄弟之间传递数据</title>
+</head>
+<body>
+    <div id="app">
+        <tmp1></tmp1>
+        <tmp2></tmp2>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var Event = new Vue;//实例身上就有Event.$emit发射  Event.$on订阅  必需写成大写
+
+    var app = new Vue({
+        el:"#app",
+        components:{
+            tmp1:{
+                template:'<h1>我是组件1哥哥 {{ msg }}</h1>',
+                data:function(){
+                    return {msg:''}
+                },
+                mounted:function(){
+//                    页面已加载进来就绑定好了
+                    Event.$on('leiele',(data) => {
+                        this.msg = data;
+                    })
+                }
+            },
+            tmp2:{
+                template:'<h1 @click="sendData">我是组件2弟弟 {{ msg }}</h1>',
+                data:function(){
+                    return {msg:'Joy'}
+                },
+                methods:{
+                    sendData:function(){
+                        //发射数据
+                        Event.$emit('leiele',this.msg)
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

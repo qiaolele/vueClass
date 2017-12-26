@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>防止花括号闪烁问题</title>
+    <style>
+        [v-cloak]{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1 v-cloak>{{msg}}</h1>
+
+        <h2>{{ n*m }}</h2>
+        <h2>{{ total }}</h2>
+
+
+        <h2>商品单价：{{ n }}</h2>
+        <h2>商品数量：{{ m }}</h2>
+        <h2>总金额：{{ total }}</h2>
+
+        <h2>商品单价1：</h2><input type="text" v-model="n"/>
+        <h2>商品数量1：</h2><input type="text" v-model="m"/>
+        <h2>总金额1：</h2><input type="text" v-model="total"/>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            msg:"hello",
+            n:0,
+            m:0
+        },
+        computed:{
+            //虽然这里放的是函数，但是可以把total当做变量来使用
+//            total:function(){//只是得到计算后的结果   getter
+//                return this.n*this.m;
+//            }
+            total:{//如果想进行设置的话，需要写成这样
+                get(){
+                    return this.n*this.m;
+                },
+                set(newValue){
+                    //newValue:total变量更新之后的值
+//                    变单价
+//                    this.n = Math.round(newValue/this.m);
+//                    变数量
+                    this.m = Math.round(newValue/this.n);
+                }
+            }
+        }
+    })
+</script>
+</html>

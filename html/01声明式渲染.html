@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+    <p title="我是title提示">测试title</p>
+    {{ msg }}
+    <!--动态绑定DOM属性用v-bind:title，但是会报红，所以简写成:title-->
+    <p v-bind:title="tip">鼠标悬停几秒钟查看此处动态绑定的提示信息！</p>
+    <p :title="tip">简写v-bind鼠标悬停几秒钟查看此处动态绑定的提示信息！</p>
+    <!--绑定事件用v-on:事件名但是他会报红，所以可以简写@:事件名-->
+    <button type="button" v-on:click="bok=!bok">点击显示或隐藏</button>
+    <button type="button" @click="bok=!bok">简写事件点击显示或隐藏</button>
+    <h1 v-if="bok">你能看到我</h1>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue ({
+        el:'#app',
+        data:{//data中专门用来存数据；
+            msg:'Hello Vue!',
+            tip:'数据title测试提示',
+            bok:true
+        }
+    })
+</script>
+</body>
+</html>

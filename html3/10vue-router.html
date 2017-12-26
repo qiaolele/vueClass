@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .router-link-active{
+            background: #009999;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!--第三部通过router-link来进行路由跳转-->
+        <router-link to="/home">home</router-link>
+        <router-link to="/list">list</router-link>
+        <router-link to="/detail">Detail</router-link>
+
+        <!--第四部通过router-view来展示内容-->
+        <router-view></router-view>
+
+    </div>
+    <template id="home">
+        <div>
+            <h1>home首页</h1>
+            <router-link to="/home/login">登录</router-link>
+            <router-link to="/home/reg">注册</router-link>
+            <router-view></router-view>
+        </div>
+    </template>
+    <template id="list">
+        <div>
+            <h1>list列表页面</h1>
+            <router-link to="/list/news/1">文章1</router-link>
+            <router-link to="/list/news/2">文章2</router-link>
+            <router-view></router-view>
+        </div>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script>
+    var Home = {template:'#home'}
+    var List = {template:'#list'};
+    var Detail = {template:'<h1>detail详情页面</h1>'};
+//    第一步创建路由实例router,并进行配置
+   var router = new VueRouter({
+       routes:[
+           {path:"/home",component:Home,
+                children:[
+                    {path:'login',component:{
+                        template:'<h2>登录页面</h2>'
+                    }},
+                    {path:'reg',component:{
+                        template:'<h2>注册页面</h2>'
+                    }}
+                ]
+           },
+           {path:"/list",component:List,
+                children:[
+                    {path:'news/:id',
+//                        通过js来获取路由参数
+                        beforeEnter(to,from,next){
+                            console.log(to.params.id);
+                            next();
+                        }
+                        ,component:{
+                            template:'<h2>文章{{ $route.params.id}}</h2>'
+                        }
+                    }
+                ]
+           },
+           {path:"/detail",component:Detail},
+           {path:'*',component:Home}//当用户输入了不存在的地址，默认都跳转到首页
+       ]
+   })
+//    第二部将router注入到app实例当中
+    var app = new Vue({
+        router,
+        el:"#app"
+    })
+</script>
+</html>

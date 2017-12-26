@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>动态绑定class样式</title>
+    <style>
+        .bg1{
+            background: #ff0000;
+        }
+        .bg2{
+            color:blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!--<h1 :class="[bg1 bg2]">你好，圆梦源！！！</h1>-->
+        <button @click="clickMe">点我</button>
+        <!--方法一——添加一个对象-->
+        <!--<h1 :class="{bg1:bok,bg2:!bok}">你好，圆梦源！！！</h1>-->
+        <!--方法二——直接绑定数据里的一个对象-->
+        <!--<h1 :class="classObj">你好，圆梦源！！！</h1>-->
+        <!--方法三：——可以直接把一个数组传给class-->
+        <h1 :class="[ bg1Class,bg2Class ]">你好，圆梦源！！！</h1>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            bok:true,
+            classObj:{
+                bg1:false,
+                bg2:true
+            },
+            bg1Class:"bg1",
+            bg2Class:"bg2"
+        },
+        methods:{
+            clickMe:function(){
+                this.bok = !this.bok;
+            }
+        }
+    })
+</script>
+</html>

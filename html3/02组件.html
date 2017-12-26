@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>自定义组件——基本组件</title>
+</head>
+<body>
+    <div id="app">
+        <!--动态操作dom属性-->
+        <!--:n="name"——里面的name是一个变量；        n="name"——里面的name是一个固定的值string字符串；-->
+        <!--此时不会报错，属性名一样，写在后面的生效，写在后面的会覆盖写在前面的-->
+        <hello :n="name" n="name"></hello>
+        <hello n="name" :n="name"></hello>
+    </div>
+    <div id="app1">
+        <hello></hello>
+    </div>
+
+    <div id="app2">
+        <nihao :Who="People"></nihao>
+    </div>
+    <div id="app3">
+        <nihao></nihao>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+//    注册一个公用的组件——可以多个实例公用一个组件
+    Vue.component('hello',{
+//        props:['n'],//通过属性接收父组件传过来的数据，没有规定数据类型，任何类型都可以['n']
+        props:{n:String},//通过属性接收父组件传过来的数据，规定数据类型，类型不匹配会自动报错
+        template:'<h1>你好，我是{{FirstName}}{{n}}</h1>',
+        data:function(){//data函数中放的就是组件自己的数据
+            return{FirstName:"乔"}
+        }
+    })
+//    第一个实例
+    var app = new Vue({
+        el:"#app",
+        data:{
+//            name:100  会报错，因为要求类型为string
+            name:"乐乐"
+        }
+    })
+//      第二个实例
+    var app1 = new Vue({
+        el:"#app1"
+    })
+
+
+    Vue.component("nihao",{
+        props:['Who'],
+        template:"<h2>大家好，欢迎{{ Who }}来到{{ addRess }}</h2>",
+        data:function(){
+            return {addRess:"首都——北京"}
+        }
+    })
+
+    var app2 = new Vue({
+        el:"#app2",
+        data:{
+            People:"张三"
+        }
+    })
+
+    var app3 = new Vue({
+        el:"#app3"
+    })
+</script>
+</html>

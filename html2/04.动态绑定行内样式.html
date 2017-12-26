@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>动态绑定行内样式</title>
+</head>
+<body>
+    <div id="app">
+        <!--方法一——直接在行间写样式，就像js对象-->
+        <h1 :style="{color:FontColor,backgroundColor:BgColor}">大家好，我是菜鸟一枚</h1>
+        <!--方法二——直接绑定一个样式对象，让模板更清晰-->
+        <h1 :style="objStyle">大家好，我是菜鸟一枚1</h1>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            FontColor:"blue",
+            BgColor:"#ccc",
+            objStyle:{
+                color:"red",
+                backgroundColor:"#099"
+            }
+        }
+    })
+</script>
+</html>

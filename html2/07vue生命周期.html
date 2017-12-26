@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Vue的生命周期</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{msg}}</h1>
+        <button @click="fn">点击更新内容</button>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            msg:"ymy"
+        },
+        beforeCreate:function(){
+            alert("beforeCreate")
+        },
+        created:function(){
+            alert("created")
+        },
+        beforeMount:function(){
+            alert('beforeMount')
+        },
+        mounted:function(){
+            alert("mounted")
+        },
+        beforeUpdate:function(){
+            alert('beforeUpdate')
+        },
+        update:function(){
+            alert("update")
+        },
+        beforeDestroy:function(){
+            alert('beforeDestroy')
+        },
+        destroy:function(){
+            alert('destroy')
+        },
+        methods:{
+            fn:function(){
+                this.msg = "蕾蕾的那些哈儿"
+            }
+        }
+    })
+    app.$destroy();//手动销毁：一般不销毁组件
+</script>
+</html>

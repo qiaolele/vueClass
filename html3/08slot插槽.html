@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>插槽</title>
+</head>
+<body>
+    <div id="app">
+        <hello>你好啊，好歹还和</hello>
+    </div>
+    <template id="temp1">
+        <!--无名插槽-->
+        <h1>hello！<slot></slot></h1>
+    </template>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        components:{
+            hello:{
+                template:'#temp1'
+            }
+        }
+    })
+</script>
+</html>

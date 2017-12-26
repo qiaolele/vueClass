@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>阻止事件冒泡和默认事件</title>
+</head>
+<body>
+    <div id="app">
+        <div class="parent" @click.stop="stopMPParent">
+                {{parent}}
+            <!--<div class="son" @click="stopMPSon">{{son}}</div>-->
+            <div class="son" @click.stop="stopMPSon">{{son}}</div>
+        </div>
+
+        <a href="www.baidu.com" @click.prevent="stopDefault">阻止默认事件</a>
+    </div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            son:"我是儿子",
+            parent:"我是父亲"
+        },
+        methods:{
+            stopMPParent:function(){
+                alert("我是父亲");
+            },
+            stopMPSon:function(e){
+                e.stopPropagation();
+                alert("我是儿子");
+            },
+            stopDefault:function(){
+                alert("阻止 默认事件")
+            }
+        }
+    })
+</script>
+</html>

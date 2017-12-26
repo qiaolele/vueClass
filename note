@@ -1,0 +1,432 @@
+### 后台MVC
+    - M 数据
+    - V 视图
+    - C 控制器
+### vue.js 是MVVM框架
+    数据可以影响视图；视图也可以影响数据；
+### 体验Vue.js
+    - 模板渲染  表达式{{}}
+    - 动态操作DOM属性      v-bind:title      :title="动态的数据"    :class
+    - 条件判断v-if
+    - 事件    v-on:click        @click
+    - 循环列表    v-for="(key,index) in ary"
+### v-if和v-show的区别
+    - v-if是结构当中清除
+    - v-show是html的样式display设置为none
+### 事件
+    - 基本事件：v-on:click(爆红，但不影响功能的使用)      @click
+    - 阻止冒泡和阻止默认事件
+        - 阻止冒泡：
+         +  e.stopPropagation ? e.stopPropagation() : e.cancelBubble=true       原生js提供的
+
+         +  @click.stop     vue提供的
+        - 阻止默认事件：
+         +  e.reventDefault ? e.preventDefault() : e.returnValue=true           原生js提供的
+    - 键盘事件
+        - @keydown      @keyup      @keypress
+        - 使用指定的键
+        + @keydown.enter
+        + @keydown.13
+        + @keydown.enter.ctrl
+
+### 动态样式绑定
+
+    - :class 非行间样式  HTML Class
+
+        - {样式名:boolean} bollean从data数据中拿到的
+        - :class="obj"      <div :class='{ active:isActive }'></div>
+        、、、
+
+        //obj中可以通过boolean控制哪个样式显示，不让哪个样式显示
+        obj:{
+            isActive:true,
+            bg2:false
+        }
+        、、、
+
+        - 以数组的形式，数组中的每一项，都相当于变量，变量中存真正的非行间样式；
+        - <div :class='[ bg1,bg2 ]'></div>  bg1����Ҫ���ַ���
+        、、、
+            data:{
+            bg1:"bg1",
+            bg2:"bg2"
+            }
+        、、、
+
+    - :style 行间样式
+
+        - {color:col1,background:col2} 其中col1和col2都相当于变量，他们里面可以存样式
+        、、、
+           data:{
+                col1:"red",
+                col2:"green"
+           }
+        、、、
+
+       -ֱ可以简写为对象 :style = "obj"
+       、、、
+         data:{
+            obj:{
+                color:"red",
+                background:"#099"
+            }
+         }
+       、、、
+
+### 前端发给后台的请求常用的三种方式
+    - get请求
+    - post请求
+    - jsonp请求
+
+
+### 防止闪烁，需要两步
+   - 在style样式中设置 [v-cloak]{display:none}
+   <style>
+        [v-cloak]{
+            display:none;
+        }
+   </style>
+
+   - 在标签html上面添加属性     [v-cloak]
+   <h1 v-cloak>{{ msg }}</h1>
+
+
+### 计算属性
+    - getter
+    compunted:{
+        total(){
+            return this.n *this.m;
+        }
+    }
+
+    - 如果想设置
+    compunted:{
+        total:{
+            get(){
+                return
+            },
+            set(newValue){
+                //newValue�����µ�total��ֵ
+
+            }
+        }
+    }
+
+    - 实例上的一些常用方法
+        + 拿到元素： app.$el
+        + 拿到数据：
+            + app.$data.属性名
+            + app.属性名
+        + 拿到自定义属性
+            + app.$options.自定义属性名
+
+
+### vue里面组件的划分：
+    1、功能模块： 如 select   pagenation ...
+    2、页面区域:  如 header  footer sidebar ...
+
+### 公用组件
+    + 多个实例都能使用这个组件
+### 基本组件封装涉及的知识
+    + 注册组件：如果Vue.component注册的是公共组件
+    + 组件自己内部的数据
+        data(){
+            return {msg:122121};
+        }
+    + 组件接收父组件传过来的数据，通过props属性
+        + 动态操作属性    :n="name"  这个name是个变量，它取决于父组件data中的值
+        、、、
+
+            data:{
+                name:"dfdkf"
+            }
+        、、、
+        + 接收的时候，子组件
+            + props:['n']       不限制传过来的数据类型
+            + props:{n:String}    限制传过来的必须是字符串类型
+
+
+###今天数据传递涉及到的知识点
+- 父组件通过props给子组件传递数据    props:['n'] 或者 props:{n,类型}
+- 子组件通过事件发射给父组件传递数据 this.$emit
+- 兄弟组件之间的数据传递      Event.$emit进行发射      Event.$on进行绑定数据
+- 数据同步，核心：传递对象，利用的是引用数据类型对地址的引用
+- 数据不同步，核心：1） 返回的必须是基本数据类型  2）找一个临时变量接收父组件传过来的数据，更改的其实就是临时变量的值；
+
+
+### 路由
+ - 1、首先先下载vue-router；命令： npm i vue-router --save-dev;
+ - 基本路由5步走：
+   -1、创建VueRouter实例，并进行配置
+
+   、、、
+   var Home={//单独把Home组件拎出来
+       template:'<h1>home</h1>'
+   };
+   var List={template:'<h1>list</h1>'}
+   var router=new VueRouter({
+       routes:[
+           {path:'/home',component:Home},
+           {path:'/list',component:List},
+           {path:'/',component:Home},//默认路由指向
+           {path:'*',component:Home} //404页面的设置
+       ]
+   })
+   、、、
+   - 2、把配置好的router实例，放入new Vue的实例当中；
+    var vm=new Vue({
+        router,//2：把router声明到vue实例上
+        el:'#app'
+    })
+   - 3、添加路由跳转，通过 <router-link to="/home"></router-link>
+
+    <router-link to="/home">首页</router-link>
+    <router-link to="/list">列表页</router-link>
+  - 4、显示组件 <router-view></router-view>
+  -  5、设置默认路由和404页面--已经在上面路由设置那里进行设置；
+ - 配置字路由 children
+
+  通过children来配置字路由
+  注意：子路由的path前面不能写成"/login",否则就不执行了；
+  var Home={template:`#home`}; //通过template创建的home模版；
+  var router=new VueRouter({
+          routes:[
+              {path:'/home',component:Home,//这里我把Home提取了
+                  children:[
+                      //这里注意：千万不能写成"/path",否则就不执行了；
+                      {path:'login',component:{
+                          template:'<p>登录</p>'
+                      }},
+                      {path:'reg',component:{
+                          template:'<p>注册</p>'
+                      }}
+                  ]
+              }
+          ]
+      });
+  vue2路由中的查询参数
+
+  var router=new VueRouter({
+      routes:[
+          {path:'/list',component:List,
+              children:[
+              //通过":"设置默认模糊路由；
+                  {path:'news/:id',component:{
+                  //通过{{$route.params.id}}来获取路由参数
+                      template:`<h3>文章{{$route.params.id}}</h3>`
+                  }}
+              ]
+          },
+          {path:'*',component:Home}
+      ]
+  });
+  js中获取路由参数，通过beforeEnter
+  {path:'/list',component:List,
+      children:[
+          {path:'news/:id',
+              //JS中获取路由参数，用beforeEnter,他有三个参数：to,from,next
+              beforeEnter(to,from,next){
+                  //console.log(to.params.id)
+                  next();//这个中间件，往下走才能看到显示的组件
+              },
+              component:{
+              template:`<h3>文章{{$route.params.id}}</h3>`
+          }}
+      ]
+  }
+
+
+### 总结一下vue-router
+### 基本的路由配置——5步骤
+    1、创建一个router实例，并进行配置
+    、、、
+    var Home = {template:'#home’} //#home就是template模板的id
+    var router = new VueRouter({
+        routes:[
+            {path:"/home",component:Home}
+        ]
+    })
+    、、、
+    2、把配置好的router放入app实例当中
+    、、、
+    var app = new Vue({
+        router,
+        el:"#app"
+    });
+    、、、
+    3、添加路由跳转
+    、、、
+    在link中写具体路由
+    <router-link to="/home">首页</router-link>
+    、、、
+    4、显示组件
+    、、、
+    <router-view></router-view>
+    、、、
+    5、设置默认路由：
+    、、、
+
+    var router = new VueRouter({
+        routes:[
+            {path:"/home",component:Home},
+            {path:"*",component:Home},
+        ]
+    })
+    、、、
+
+### 子路由：
+1、 需求：如果要在首页展示登录和注册按钮
+    1、 在home组件的模板中设置如下：
+    、、、
+        <router-link to="/home/login">登录</router-link>
+        <router-link to="/home/reg">注册</router-link>
+        <router-view></router-view>
+    、、、
+    2、 到routes进行设置路由和模板：
+    、、、
+    var router = new VueRouter({
+        routes:[
+            {path:"/home",component:Home,
+                children:[
+                //注意：这里的path千万不要加/,否则会报错
+                    {path:"login",component:{
+                        template:"<h3>我是登录login页面</h3>"
+                    }},
+                    {path:"reg",component:{
+                        template:"<h3>我是注册reg页面</h3>"
+                    }}
+                ]
+            }
+        ]
+    })
+
+    、、、
+
+### 路由参数
+1、在router中设置模糊路由——传参数   '/list/news/:id'
+2、在router-link中设置具体路由：   '/list/news/1111'
+3、通过#route.params.id来获取路由参数；
+4、JS中通过
+、、、
+beforeEnter(to,from,next){
+//接收参数， to.params.id
+//往下流：
+    next();
+}
+
+、、、
+
+
+
+### 子组件和样式
+    - 一个.vue的文件：    template    style   script  三部分组成
+    - scoped    把样式私有化  style的属性
+    - less
+        、、、
+        <style scoped lang="less" rel="stylesheet/less">
+        表示支持less文件类型
+        、、、
+        + 前提得下载安装less 和less-loader模块
+
+
+### 跑程序命令——npm start
+### 端口号被占用，就直接用任务管理器关闭掉——node.exe文件
+
+### vue里面的动画
+- transition组件,让谁动，就用transition把谁包裹起来；
+- 配合第三方库来设置样式：animate.css
+    + 使用 style 上添加  enter-active-class="animated fadeIn"——进入状态    leave-active-class="animated fadeOut"——移出状态
+
+- 自定义组件要用根目录的方式引入；——import leButton from './components/Button';
+
+
+
+### 数据请求
+
+- vue-resource
+通过Vue.use(VueResource) 注册为公共组件；
+    + this.$http.get()
+    + this.$http.post();
+    + this.$http.jsonp();
+
+- axios
+不能使用Vue.use()来注册公共组件，必须使用Vue.prototype.$http = axios;   写法同vue-resource
+    + this.$http.get()
+    + this.$http.post();
+    + this.$http.jsonp();——会出错，坑
+
+
+### 脚手架 vue-cli
+-   1、npm install -g vue-cli    安装脚手架
+-   2、vue init webpack-simple vueProject    初始化项目   webpack-simple安装的脚手架类型（小型项目一般用这个）   vueProject是自己要创建的项目名称
+-   3、将没用的删了就ok了；
+-   4、 cd 项目名   ——进入该项目
+-   5、npm install ——安装需要的架包
+-   6、npm run dev——运行项目
+
+### 脚手架目录
+-   build   config  ——存放webpack配置相关的文件
+-   node_modules文件夹     ——npm install安装的依赖代码库
+-   src目录   ——存放项目源码，开发的所有代码都会放到该目录下
+-   static目录    ——存放一些第三方库，静态资源的文件
+    -   babelrc     一些配置文件，文件编码的转换
+    -   editorconfig    ——编辑器的配置：编码，缩进风格，换行符风格
+    -   slintignore     ——忽略语法检查的目录文件
+    -   eslintrc        ——eslint的配置文件
+
+
+
+Vue核心
+- DOM 是数据的一种自然映射
+- 组件化   扩展HTML元素，封装可重用的代码
+    + 组件化原则
+        - 页面上每个独立的视/可交互区域视为一个组件
+        - 每个组件对应一个工程目录，组件所需要的各种资源在这个目录下就近维护
+        - 页面不过是组件的容器，组件可以嵌套自由组合形成完整的页面
+
+
+
+### 整体思路
+-   index.html 主页文件:因为我们开发的是单页web应用，所以说一般只有一个html文件
+-   main.js是整个项目的入口文件,在src文件夹下：
+    、、、
+        import Vue from 'vue'
+        import App from './App'
+        import router from './router'
+
+        Vue.config.productionTip = false   //生产环境提示，这里设置成了false
+
+        /* eslint-disable no-new */
+        new Vue({
+          el: '#app',
+          router,
+          template: '<App/>',
+          components: { App }
+        })
+    、、、
+    通过代码可以看出这里引进了App的组件和<App/>的模板，它是通过 import App from ‘./App’这句代码引入的。  我们找到App.vue文件，打开查看。
+-   App.vue文件:app.vue文件我们可以分成三部分解读
+    、、、
+    <template></template>标签包裹的内容：这是模板的HTMLDom结构，里边引入了一张图片和<router-view></router-view>标签，<router-view>标签说明使用了路由机制。我们会在以后专门拿出一篇文章讲Vue-router。
+    <script></script>标签包括的js内容：你可以在这里些一些页面的动态效果和Vue的逻辑代码。
+    <style></style>标签包裹的css内容：这里就是你平时写的CSS样式，对页面样子进行装饰用的，需要特别说明的是你可以用<style scoped></style>来声明这些css样式只在本模板中起作用。
+    、、、
+-   router/index.js 路由文件
+    、、、
+    我们可以看到 import Hello from ‘@/components/Hello’这句话， 文件引入了/components/Hello.vue文件。这个文件里就配置了一个路由，就是当我们访问网站时给我们显示Hello.vue的内容。
+    、、、
+-   Hello.vue文件解读：
+    、、、
+    这个文件就是我们在第一节课看到的页面文件了。也是分为<template><script><style>三个部分，以后我们大部分的工作都是写这些.vue结尾的文件。现在我们可以试着改一些内容，然后预览一下。
+    、、、
+
+### 自动格式化：  control+alt+L
+
+
+### 图标字体文件制作    ——使用IcoMoon工具——https://icomoon.io/
+    - 1、点击右上角的按钮：IcoMoon App
+    - 2、点击左上角的按钮：Import Icons   ——将自己的svg图标全部引入
+    - 3、将导入的图标全部选中，然后点击右下角的按钮：Generate Font F
+    - 4、点击左上角的按钮：Preferences ——Font Name 修改名字
+    - 5、点击右下角按钮：Donwload将设置好的自己下载下来
+

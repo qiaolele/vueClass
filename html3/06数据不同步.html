@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据不同步</title>
+</head>
+<body>
+    <div id="app">
+        <parent></parent>
+    </div>
+    <template id="parent">
+        <div>
+            <h1>我是父组件 <mark>{{name}}</mark></h1>
+            <children :n="name"></children>
+        </div>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        components:{
+            parent:{
+                template:"#parent",
+                data:function(){
+                    return {name:"乐乐"}
+                },
+                components:{
+                    children:{
+                        props:{n:String},
+                        template:"<h1 @click='getName'>我是子元件 <mark>{{n1}}</mark></h1>",
+//                        先找一个变量，来接收父组件传过来的数据，因为数据是基本类型数据，所以就相当于多复制了一份而已，修改复制的那份的值就可以了
+                        data:function(){
+                            return {n1:this.n}
+                        },
+                        methods:{
+                            getName:function(){
+//                                当事件触发的时候，修改n1的值就可了
+                                this.n1 = "地方可对付"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+    <p title="我是title提示">测试title</p>
+
+    {{ msg }}
+
+    <!--动态绑定DOM属性用v-bind:title，但是会报红，所以简写成:title-->
+    <p v-bind:title="tip">鼠标悬停几秒钟查看此处动态绑定的提示信息！</p>
+    <p :title="tip">简写v-bind鼠标悬停几秒钟查看此处动态绑定的提示信息！</p>
+
+    <!--绑定事件用v-on:事件名但是他会报红，所以可以简写@:事件名-->
+    <button type="button" v-on:click="bok=!bok">点击显示或隐藏</button>
+    <button type="button" @click="bok=!bok">简写事件点击显示或隐藏</button>
+    <h1 v-if="bok">你能看到我</h1>
+
+
+    <h1>你爱吃什么水果呢？</h1>
+    <ul>
+        <li v-for="(key,index) in friuts">{{ key.name }}我的索引是 {{index}}</li>
+    </ul>
+
+    <p>{{msg}}</p>
+    <button @click="reverseMessage">点击按钮 翻转文字</button>
+
+
+    <input type="text" v-model = 'msg1'/>
+    <h1>{{msg1}}</h1>
+    <h2 v-once>{{msg1}}</h2>//这个数据只能被渲染一次，不会被更改
+
+    <ol>
+        <!--2、直接使用自定义组件-->
+        <!--3、通过自定义属性，给自定义组件传数组-->
+        <!--<ymy-leilei v-for="item in ary" :todo="item"></ymy-leilei>-->
+        <ymy-leilei v-for="item in friuts" :todo="item"></ymy-leilei>
+    </ol>
+
+
+    <!--{{}}是表达式：支持 msg 赋值 三目（三元表达式）-->
+    <h1>
+        <!--变量-->
+        {{msg}}
+        <!--给msg赋值-->
+        {{msg = 320}}
+        <!--三元表达式-->
+        {{bok?"lele":"乐乐"}}
+    </h1>
+
+    <!--只是div的内容为msg2-->
+    <div>{{msg2}}</div>
+    <!--真正的作为结构渲染-->
+    <div v-html="msg2"></div>
+
+
+    <!--遍历对象  item就指的是值，index指的是名字-->
+    <p v-for="(item,index) in obj">{{item}} {{index}}</p>
+
+
+</div>
+<script src="../js/vue.js"></script>
+<script>
+//    1、注册一个组件
+    Vue.component('ymy-leilei',{
+        props:['todo'],
+//        template:'<li>{{todo}}</li>'数组形式引用
+        template:'<li>{{todo.name}}</li>'//对象形式引用
+    })
+
+
+    var app = new Vue ({
+        el:'#app',
+        data:{//data中专门用来存数据；
+            msg:'Hello Vue!',
+            msg1:'视图影响数据',
+            msg2:'<h1>我是文章的标题</h1>',
+            tip:'数据title测试提示',
+            bok:true,
+            friuts:[
+//                '西瓜','荔枝','榴莲','芒果'
+                {name: '西瓜1'},
+                {name: '荔枝2'},
+                {name: '榴莲3'},
+                {name: '芒果4'}
+            ],
+            ary:['西瓜','荔枝','榴莲','芒果'],
+            obj:{
+                name:'ymy',
+                age:18
+            }
+        },
+        methods:{//所有的函数都放在methods里面
+            reverseMessage:function(){
+//                先把字符串用split转成数组，只有数组才有reverse方法，之后再将数组用join拼接成字符串
+                this.msg = this.msg.split("").reverse().join("");
+            }
+        }
+    })
+</script>
+</body>
+</html>

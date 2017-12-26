@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>私有组件_父子组件</title>
+</head>
+<body>
+    <div id="app">
+        <parent :aaa="leilei"></parent>
+    </div>
+    <template id="temp1">
+        <div>
+            <h1>{{ msg }}父组件 {{aaa}}</h1>
+            <children :n="msg"></children>
+        </div>
+    </template>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:"#app",
+        data:{
+            leilei:"32323"
+        },
+        components:{//一个实例中可以有多个组件
+//          父组件
+            parent:{
+                props:{aaa:String},
+                template:'#temp1',
+                data:function(){
+                    return {msg:'hello！'}
+                },
+
+//              子组件
+                components:{//一个父组件中可以有多个子组件
+                    children:{
+                        props:['n'],
+                        template:'<h2>子组件{{ n }}</h2>'
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>
