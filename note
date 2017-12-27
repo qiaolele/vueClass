@@ -440,3 +440,17 @@ Vue核心
     - 4、点击左上角的按钮：Preferences ——Font Name 修改名字
     - 5、点击右下角按钮：Donwload将设置好的自己下载下来
 
+
+### vue1和vue2的区别
+    - 1、派发事件 vue1——$dispatch这个方法
+                vue2——$emit这个方法
+
+
+
+### eslint语法要求：
+    -  1  comma-spacing
+        this.$emit ('cart.add');——X
+        this.$emit('cart.add');——√
+    -  2  func-call-spacing
+        this.$emit('cart.add',event.target);——X
+        this.$emit('cart.add', event.target);——√
